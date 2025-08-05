@@ -46,7 +46,7 @@ function App() {
   }, []);
 
   const teamMembers = [
-    { name: 'Mrhos Mkoma', role: 'Lead Animator', image: 'member1.png' },
+    { name: 'Method Mkoma', role: 'Lead Animator', image: 'member1.png' },
     { name: 'Chilengwe Siachalwe', role: 'Animator', image: 'member2.png' },
     { name: 'Zakia Mfinanga', role: 'Game Developer', image: 'member3.png' },
     { name: 'Mariam Ngoi', role: 'Educator', image: 'member4.png' },
