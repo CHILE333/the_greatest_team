@@ -1,74 +1,65 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import './Chat.css';
+import chatIcon from './assets/images/chat.jpg';
 
-const Chat = ({ teamMembers }) => {
-  const { memberId } = useParams();
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    if (memberId) {
-      const member = teamMembers.find(m => m.id === parseInt(memberId));
-      setSelectedMember(member);
-      // Load chat history for this member
-      setMessages([
-        {
-          id: 1,
-          sender: member.id,
-          text: `Hi there! This is ${member.name}. How can I help you today?`,
-          time: '10:30 AM'
-        },
-        {
-          id: 2,
-          sender: 0, // Current user
-          text: "Hi! I wanted to discuss the project progress.",
-          time: '10:32 AM'
-        }
-      ]);
+function Chat({ teamMembers }) {
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      sender: teamMembers[0].name,
+      senderImage: teamMembers[0].image,
+      text: "Hey team! How's the animation coming along?",
+      time: "10:30 AM",
+      isReceived: true
+    },
+    {
+      id: 2,
+      sender: teamMembers[2].name,
+      senderImage: teamMembers[2].image,
+      text: "Going well! Should have the first draft by EOD.",
+      time: "10:32 AM",
+      isReceived: false
+    },
+    {
+      id: 3,
+      sender: teamMembers[3].name,
+      senderImage: teamMembers[3].image,
+      text: "Don't forget we have the client review tomorrow at 2PM",
+      time: "10:35 AM",
+      isReceived: true
     }
-  }, [memberId, teamMembers]);
+  ]);
+  const [newMessage, setNewMessage] = useState('');
 
   const handleSendMessage = () => {
-    if (message.trim() === '') return;
+    if (newMessage.trim() === '') return;
     
-    const newMessage = {
+    const message = {
       id: messages.length + 1,
-      sender: 0, // Current user
-      text: message,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      sender: "You",
+      senderImage: teamMembers[1].image,
+      text: newMessage,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isReceived: false
     };
     
-    setMessages([...messages, newMessage]);
-    setMessage('');
-    
-    // Simulate reply after 1 second
-    setTimeout(() => {
-      const reply = {
-        id: messages.length + 2,
-        sender: selectedMember.id,
-        text: `Thanks for your message! I'll get back to you soon about this.`,
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setMessages(prev => [...prev, reply]);
-    }, 1000);
+    setMessages([...messages, message]);
+    setNewMessage('');
   };
 
   return (
-    <section className="chat-section">
+    <div className="chat-section">
       <div className="section-inner">
-        <h2 className="section-title">Team Chat</h2>
+        <div className="chat-header">
+          <img src={chatIcon} alt="Chat Icon" className="chat-icon" />
+          <h2 className="section-title">Team Chat</h2>
+        </div>
         <div className="chat-container">
           <div className="chat-members">
             <h3>Team Members</h3>
             <ul>
-              {teamMembers.map((member) => (
-                <li 
-                  key={member.id} 
-                  className={selectedMember?.id === member.id ? 'active' : ''}
-                  onClick={() => setSelectedMember(member)}
-                >
+              {teamMembers.map((member, i) => (
+                <li key={i}>
                   <div 
                     className="member-avatar"
                     style={{ backgroundImage: `url(${member.image})` }}
@@ -79,61 +70,49 @@ const Chat = ({ teamMembers }) => {
             </ul>
           </div>
           <div className="chat-messages">
-            {selectedMember ? (
-              <>
-                <div className="chat-header">
-                  <div 
-                    className="member-avatar"
-                    style={{ backgroundImage: `url(${selectedMember.image})` }}
-                  ></div>
-                  <div>
-                    <h3>{selectedMember.name}</h3>
-                    <p>{selectedMember.role}</p>
-                  </div>
-                </div>
-                <div className="messages-container">
-                  {messages.map((msg) => (
+            <div className="messages-container">
+              {messages.map((message) => (
+                <div 
+                  key={message.id} 
+                  className={`message ${message.isReceived ? 'received' : 'sent'}`}
+                >
+                  {message.isReceived && (
                     <div 
-                      key={msg.id} 
-                      className={`message ${msg.sender === 0 ? 'sent' : 'received'}`}
-                    >
-                      {msg.sender !== 0 && (
-                        <div 
-                          className="message-avatar"
-                          style={{ backgroundImage: `url(${selectedMember.image})` }}
-                        ></div>
-                      )}
-                      <div className="message-content">
-                        {msg.sender !== 0 && (
-                          <div className="message-sender">{selectedMember.name}</div>
-                        )}
-                        <div className="message-text">{msg.text}</div>
-                        <div className="message-time">{msg.time}</div>
-                      </div>
-                    </div>
-                  ))}
+                      className="message-avatar"
+                      style={{ backgroundImage: `url(${message.senderImage})` }}
+                    ></div>
+                  )}
+                  <div className="message-content">
+                    {message.isReceived && (
+                      <div className="message-sender">{message.sender}</div>
+                    )}
+                    <div className="message-text">{message.text}</div>
+                    <div className="message-time">{message.time}</div>
+                  </div>
+                  {!message.isReceived && (
+                    <div 
+                      className="message-avatar"
+                      style={{ backgroundImage: `url(${message.senderImage})` }}
+                    ></div>
+                  )}
                 </div>
-                <div className="message-input">
-                  <input 
-                    type="text" 
-                    placeholder="Type your message..." 
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  />
-                  <button onClick={handleSendMessage}>Send</button>
-                </div>
-              </>
-            ) : (
-              <div className="select-member-prompt">
-                <p>Select a team member to start chatting</p>
-              </div>
-            )}
+              ))}
+            </div>
+            <div className="message-input">
+              <input 
+                type="text" 
+                placeholder="Type your message..." 
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              />
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
-};
+}
 
 export default Chat;

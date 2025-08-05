@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import './App.css';
 import logo from './assets/images/the.png';
+import chatIcon from './assets/images/chat.png';
+import Chat from './Chat';
 
-function App() {
+function MainApp() {
   const [activeSection, setActiveSection] = useState('home');
   const [scrollY, setScrollY] = useState(0);
   const [projects, setProjects] = useState([
@@ -24,7 +28,9 @@ function App() {
     deadline: ""
   });
   const [showProjectForm, setShowProjectForm] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const heroRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +41,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Animate slogan words sequentially
     const words = document.querySelectorAll('.title-word');
     words.forEach((word, i) => {
       setTimeout(() => {
@@ -85,9 +90,14 @@ function App() {
     }));
   };
 
+  const scrollToSection = (section) => {
+    setActiveSection(section);
+    setMobileMenuOpen(false);
+    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="app-container">
-      {/* Animated Background */}
       <div className="particles-container">
         {[...Array(30)].map((_, i) => (
           <div
@@ -103,32 +113,46 @@ function App() {
         ))}
       </div>
 
-      {/* Floating Navigation */}
       <nav className={`floating-nav ${scrollY > 100 ? 'scrolled' : ''}`}>
         <div className="nav-logo">
           <img src={logo} alt="The Greatest Company Logo" style={{ height: '40px' }} />
         </div>
-        <div className="nav-links">
+        
+        <button 
+          className="mobile-menu-button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+        </button>
+        
+        <div className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <button
-            onClick={() => setActiveSection('home')}
+            onClick={() => {
+              scrollToSection('home');
+              navigate('/');
+            }}
             className={activeSection === 'home' ? 'active' : ''}
           >
             Home
           </button>
           <button
-            onClick={() => setActiveSection('team')}
+            onClick={() => scrollToSection('team')}
             className={activeSection === 'team' ? 'active' : ''}
           >
             Our Team
           </button>
           <button
-            onClick={() => setActiveSection('projects')}
+            onClick={() => scrollToSection('projects')}
             className={activeSection === 'projects' ? 'active' : ''}
           >
             Projects
           </button>
           <button
-            onClick={() => setActiveSection('chat')}
+            onClick={() => {
+              setActiveSection('chat');
+              navigate('/chat');
+              setMobileMenuOpen(false);
+            }}
             className={activeSection === 'chat' ? 'active' : ''}
           >
             Team Chat
@@ -136,8 +160,7 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero" ref={heroRef}>
+      <section className="hero" ref={heroRef} id="home">
         <div className="hero-inner">
           <div className="hero-content">
             <h1 className="hero-title">
@@ -149,7 +172,7 @@ function App() {
             <p className="hero-subtitle">Innovating Animation, Gaming, and Education</p>
             <button 
               className="cta-button pulse"
-              onClick={() => setActiveSection('projects')}
+              onClick={() => scrollToSection('projects')}
             >
               View Our Projects
             </button>
@@ -173,8 +196,7 @@ function App() {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section className="projects-section">
+      <section className="projects-section" id="projects">
         <div className="section-inner">
           <h2 className="section-title">Our Projects</h2>
           
@@ -271,71 +293,7 @@ function App() {
         </div>
       </section>
 
-      {/* Team Chat Section */}
-      <section className="chat-section">
-        <div className="section-inner">
-          <h2 className="section-title">Team Chat</h2>
-          <div className="chat-container">
-            <div className="chat-members">
-              <h3>Team Members</h3>
-              <ul>
-                {teamMembers.map((member, i) => (
-                  <li key={i}>
-                    <div 
-                      className="member-avatar"
-                      style={{ backgroundImage: `url(${member.image})` }}
-                    ></div>
-                    <span>{member.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="chat-messages">
-              <div className="messages-container">
-                <div className="message received">
-                  <div 
-                    className="message-avatar"
-                    style={{ backgroundImage: `url(${teamMembers[0].image})` }}
-                  ></div>
-                  <div className="message-content">
-                    <div className="message-sender">{teamMembers[0].name}</div>
-                    <div className="message-text">Hey team! How's the animation coming along?</div>
-                    <div className="message-time">10:30 AM</div>
-                  </div>
-                </div>
-                <div className="message sent">
-                  <div className="message-content">
-                    <div className="message-text">Going well! Should have the first draft by EOD.</div>
-                    <div className="message-time">10:32 AM</div>
-                  </div>
-                  <div 
-                    className="message-avatar"
-                    style={{ backgroundImage: `url(${teamMembers[2].image})` }}
-                  ></div>
-                </div>
-                <div className="message received">
-                  <div 
-                    className="message-avatar"
-                    style={{ backgroundImage: `url(${teamMembers[3].image})` }}
-                  ></div>
-                  <div className="message-content">
-                    <div className="message-sender">{teamMembers[3].name}</div>
-                    <div className="message-text">Don't forget we have the client review tomorrow at 2PM</div>
-                    <div className="message-time">10:35 AM</div>
-                  </div>
-                </div>
-              </div>
-              <div className="message-input">
-                <input type="text" placeholder="Type your message..." />
-                <button>Send</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Showcase */}
-      <section className="team-showcase">
+      <section className="team-showcase" id="team">
         <div className="section-inner">
           <h2 className="section-title">Meet The Team</h2>
           <div className="team-members">
@@ -358,7 +316,17 @@ function App() {
         </div>
       </section>
 
-      {/* Footer */}
+      <div 
+        className={`floating-chat-icon ${scrollY > 100 ? 'visible' : ''}`}
+        onClick={() => {
+          setActiveSection('chat');
+          navigate('/chat');
+        }}
+      >
+        <img src={chatIcon} alt="Chat" />
+        <span className="notification-badge">3</span>
+      </div>
+
       <footer className="main-footer">
         <div className="footer-inner">
           <div className="footer-content">
@@ -384,6 +352,30 @@ function App() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainApp />} />
+        <Route path="/chat" element={<Chat teamMembers={[
+          { name: 'Method Mkoma', role: 'Lead Animator', image: 'member1.png' },
+          { name: 'Chilengwe Siachalwe', role: 'Animator', image: 'member2.png' },
+          { name: 'Zakia Mfinanga', role: 'Game Developer', image: 'member3.png' },
+          { name: 'Mariam Ngoi', role: 'Educator', image: 'member4.png' },
+          { name: 'Josebert Fredy', role: 'Lead Animator', image: 'member5.png' },
+          { name: 'Evance Mosha', role: 'Game Designer', image: 'member6.png' },
+          { name: 'Clara Conrad', role: 'Education Specialist', image: 'member7.png' },
+          { name: 'Davis Bubelwa', role: '3D Artist', image: 'member8.png' },
+          { name: 'Kundi Thomas', role: 'Game Programmer', image: 'member9.png' },
+          { name: 'Lukas Siyame', role: 'Instructional Designer', image: 'member10.png' },
+          { name: 'Asifiwe Nelson', role: 'Animation Director', image: 'member11.png' },
+          { name: 'Daud Sospeter', role: 'Game Tester', image: 'member12.png' },
+        ]} />} />
+      </Routes>
+    </Router>
   );
 }
 
