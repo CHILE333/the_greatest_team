@@ -13,11 +13,11 @@ function MainApp() {
     {
       id: 1,
       title: "DO IT POSSIBLE",
-      description: "3D Animation Project from 4th August to 4th September",
+      description: "3D Animation Project from 4th August to 4th September no excuse",
       image: "project1.png",
       progress: 65,
       deadline: "2023-09-04",
-      team: ["Mrhos Mkoma", "Zakia Mfinanga", "Davis Bubelwa"]
+      team: ["Method Mkoma", "Zakia Mfinanga", "Davis Bubelwa"]
     }
   ]);
   const [newProject, setNewProject] = useState({

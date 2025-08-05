@@ -11,7 +11,7 @@ function Chat({ teamMembers }) {
       id: 1,
       sender: teamMembers[0].name,
       senderImage: teamMembers[0].image,
-      text: "Hey team! How's the animation coming along?",
+      text: "Hey team! How's the animation coming along? I heard DO IT POSSIBLE is in progress. can you describe ",
       time: "10:30 AM",
       isReceived: true
     },
