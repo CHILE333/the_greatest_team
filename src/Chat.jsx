@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaTrash } from 'react-icons/fa';
-import './chat.css'; // Updated to lowercase to match repository
+import './chat.css'; // Ensured lowercase to match repository
 import chatIcon from './assets/images/chat.png';
 
 function Chat({ teamMembers }) {
