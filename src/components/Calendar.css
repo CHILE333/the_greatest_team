@@ -1,0 +1,231 @@
+.calendar-section {
+  padding: 5rem 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.calendar-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.calendar-header h3 {
+  color: #00ffff;
+  font-size: 1.5rem;
+}
+
+.calendar-header button {
+  background: transparent;
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calendar-header button:hover {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.calendar-day-header {
+  text-align: center;
+  padding: 0.5rem;
+  color: #00ffff;
+  font-weight: bold;
+}
+
+.calendar-day {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.5rem;
+  min-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.calendar-day.today {
+  border: 2px solid #00ffff;
+}
+
+.calendar-day:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.day-number {
+  font-size: 0.9rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-event {
+  background: rgba(0, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-time {
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.event-title {
+  font-size: 0.9rem;
+  color: #00ffff;
+}
+
+.upcoming-events {
+  margin-top: 2rem;
+}
+
+.upcoming-events h3 {
+  color: #00ffff;
+  margin-bottom: 1.5rem;
+}
+
+.event-card {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 200, 255, 0.2);
+}
+
+.event-date {
+  width: 100px;
+  text-align: center;
+  color: #00ffff;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+
+.event-details h4 {
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.event-details p {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.add-event-button {
+  background: linear-gradient(45deg, #ff00cc, #3333ff);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 2rem auto;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.add-event-button:hover {
+  transform: translateY(-3px);
+}
+
+.event-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.event-form {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.event-form h3 {
+  color: #00ffff;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.form-group textarea {
+  height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-actions button {
+  background: linear-gradient(45deg, #00ffff, #0088ff);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-actions button:last-child {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #00ffff;
+}
+
+.form-actions button:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

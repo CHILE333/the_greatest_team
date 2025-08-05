@@ -19,7 +19,8 @@ html, body, #root {
 
 /* ===== SECTIONS STRUCTURE ===== */
 .hero,
-.values-section,
+.projects-section,
+.chat-section,
 .team-showcase,
 .main-footer {
   width: 100vw;
@@ -168,6 +169,7 @@ html, body, #root {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s forwards;
+  margin-right: 10px;
 }
 
 .title-word-1 { animation-delay: 0.1s; }
@@ -261,6 +263,8 @@ html, body, #root {
   left: 50%;
   margin: -30px 0 0 -30px;
   box-shadow: 0 0 20px rgba(255, 0, 204, 0.5);
+  background-size: cover;
+  background-position: center;
 }
 
 @keyframes rotate {
@@ -268,70 +272,342 @@ html, body, #root {
   to { transform: rotate(360deg); }
 }
 
-/* ===== VALUES SECTION ===== */
-.values-section {
+/* ===== PROJECTS SECTION ===== */
+.projects-section {
   padding: 5rem 0;
-  position: relative;
-  z-index: 1;
   background: rgba(0, 0, 0, 0.2);
 }
 
-.section-title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  display: inline-block;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #00ffff, transparent);
-}
-
-.values-grid {
+.projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  width: 100%;
+  margin-bottom: 3rem;
 }
 
-.value-card {
+.project-card {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 2rem;
+  border-radius: 15px;
+  overflow: hidden;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.value-card:hover {
+.project-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 15px 30px rgba(0, 200, 255, 0.2);
-  border-color: rgba(0, 255, 255, 0.3);
 }
 
-.value-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+.project-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
 }
 
-.value-card h3 {
+.project-details {
+  padding: 1.5rem;
+}
+
+.project-details h3 {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: #00ffff;
 }
 
-.value-card p {
+.project-details p {
   color: #aaa;
-  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.project-meta {
+  margin-top: 1rem;
+}
+
+.progress-container {
+  background: rgba(255, 255, 255, 0.1);
+  height: 20px;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffff, #0088ff);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-container span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  color: white;
+}
+
+.deadline {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+
+.view-button {
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00ffff;
+  color: #00ffff;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-button:hover {
+  background: rgba(0, 255, 255, 0.2);
+}
+
+.add-project-button {
+  background: linear-gradient(45deg, #ff00cc, #3333ff);
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.add-project-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(255, 0, 204, 0.3);
+}
+
+.project-form {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 15px;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.project-form h3 {
+  margin-bottom: 1.5rem;
+  color: #00ffff;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #aaa;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  color: white;
+}
+
+.form-group textarea {
+  min-height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.form-actions button {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-actions button:first-child {
+  background: linear-gradient(45deg, #00ffff, #0088ff);
+  color: white;
+}
+
+.form-actions button:last-child {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.form-actions button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+/* ===== CHAT SECTION ===== */
+.chat-section {
+  padding: 5rem 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.chat-container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.chat-members {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.chat-members h3 {
+  margin-bottom: 1.5rem;
+  color: #00ffff;
+}
+
+.chat-members ul {
+  list-style: none;
+  padding: 0;
+}
+
+.chat-members li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.chat-members li:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.messages-container {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 1.5rem;
+  max-width: 70%;
+}
+
+.message.received {
+  align-self: flex-start;
+}
+
+.message.sent {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+  margin-right: 1rem;
+}
+
+.message.sent .message-avatar {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+.message-content {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.8rem 1.2rem;
+  border-radius: 15px;
+  position: relative;
+}
+
+.message.received .message-content {
+  border-top-left-radius: 0;
+}
+
+.message.sent .message-content {
+  background: linear-gradient(45deg, #00ffff, #0088ff);
+  border-top-right-radius: 0;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.message-text {
+  margin-bottom: 0.3rem;
+}
+
+.message-time {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.message-input {
+  display: flex;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-input input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50px;
+  color: white;
+}
+
+.message-input button {
+  background: linear-gradient(45deg, #00ffff, #0088ff);
+  border: none;
+  color: white;
+  padding: 0 1.5rem;
+  margin-left: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.message-input button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
 }
 
 /* ===== TEAM SHOWCASE ===== */
@@ -383,10 +659,11 @@ html, body, #root {
 .member-avatar {
   width: 120px;
   height: 120px;
-  background: linear-gradient(45deg, #ff9900, #ff00cc);
   border-radius: 50%;
   margin: 0 auto 1rem;
   box-shadow: 0 0 30px rgba(255, 0, 204, 0.3);
+  background-size: cover;
+  background-position: center;
 }
 
 .team-member-card h3 {
@@ -491,6 +768,15 @@ html, body, #root {
   .hero-title {
     margin-top: 2rem;
   }
+
+  .chat-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .chat-members {
+    display: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -498,7 +784,10 @@ html, body, #root {
     display: none;
   }
 
-  .values-grid,
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
   .team-members {
     grid-template-columns: 1fr;
   }
@@ -524,8 +813,12 @@ html, body, #root {
     font-size: 1rem;
   }
 
-  .value-card,
+  .project-card,
   .team-member-card {
     padding: 1.5rem;
+  }
+
+  .message {
+    max-width: 90%;
   }
 }

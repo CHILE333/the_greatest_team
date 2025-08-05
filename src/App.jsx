@@ -1,10 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
-import logo from './assets/images/the.png'; // Assuming the logo is in the src directory
+import logo from './assets/images/the.png';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [scrollY, setScrollY] = useState(0);
+  const [projects, setProjects] = useState([
+    {
+      id: 1,
+      title: "DO IT POSSIBLE",
+      description: "3D Animation Project from 4th August to 4th September",
+      image: "project1.png",
+      progress: 65,
+      deadline: "2023-09-04",
+      team: ["Mrhos Mkoma", "Zakia Mfinanga", "Davis Bubelwa"]
+    }
+  ]);
+  const [newProject, setNewProject] = useState({
+    title: "",
+    description: "",
+    image: "",
+    progress: 0,
+    deadline: ""
+  });
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,19 +34,56 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Animate slogan words sequentially
+    const words = document.querySelectorAll('.title-word');
+    words.forEach((word, i) => {
+      setTimeout(() => {
+        word.style.opacity = 1;
+        word.style.transform = 'translateY(0)';
+      }, i * 500);
+    });
+  }, []);
+
   const teamMembers = [
-    { name: 'Chilengwe Siachalwe', role: 'Animator' },
-    { name: 'Zakia Mfinanga', role: 'Game Developer' },
-    { name: 'Mariam Ngoi', role: 'Educator' },
-    { name: 'Josebert Fredy', role: 'Lead Animator' },
-    { name: 'Evance Mosha', role: 'Game Designer' },
-    { name: 'Clara Conrad', role: 'Education Specialist' },
-    { name: 'Davis Bubelwa', role: '3D Artist' },
-    { name: 'Kundi Thomas', role: 'Game Programmer' },
-    { name: 'Lukas Siyame', role: 'Instructional Designer' },
-    { name: 'Asifiwe Nelson', role: 'Animation Director' },
-    { name: 'Daud Sospeter', role: 'Game Tester' },
+    { name: 'Mrhos Mkoma', role: 'Lead Animator', image: 'member1.png' },
+    { name: 'Chilengwe Siachalwe', role: 'Animator', image: 'member2.png' },
+    { name: 'Zakia Mfinanga', role: 'Game Developer', image: 'member3.png' },
+    { name: 'Mariam Ngoi', role: 'Educator', image: 'member4.png' },
+    { name: 'Josebert Fredy', role: 'Lead Animator', image: 'member5.png' },
+    { name: 'Evance Mosha', role: 'Game Designer', image: 'member6.png' },
+    { name: 'Clara Conrad', role: 'Education Specialist', image: 'member7.png' },
+    { name: 'Davis Bubelwa', role: '3D Artist', image: 'member8.png' },
+    { name: 'Kundi Thomas', role: 'Game Programmer', image: 'member9.png' },
+    { name: 'Lukas Siyame', role: 'Instructional Designer', image: 'member10.png' },
+    { name: 'Asifiwe Nelson', role: 'Animation Director', image: 'member11.png' },
+    { name: 'Daud Sospeter', role: 'Game Tester', image: 'member12.png' },
   ];
+
+  const handleAddProject = () => {
+    const project = {
+      id: projects.length + 1,
+      ...newProject,
+      team: []
+    };
+    setProjects([...projects, project]);
+    setNewProject({
+      title: "",
+      description: "",
+      image: "",
+      progress: 0,
+      deadline: ""
+    });
+    setShowProjectForm(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProject(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   return (
     <div className="app-container">
@@ -65,41 +122,49 @@ function App() {
             Our Team
           </button>
           <button
-            onClick={() => setActiveSection('values')}
-            className={activeSection === 'values' ? 'active' : ''}
+            onClick={() => setActiveSection('projects')}
+            className={activeSection === 'projects' ? 'active' : ''}
           >
-            Values
+            Projects
           </button>
           <button
-            onClick={() => setActiveSection('contact')}
-            className={activeSection === 'contact' ? 'active' : ''}
+            onClick={() => setActiveSection('chat')}
+            className={activeSection === 'chat' ? 'active' : ''}
           >
-            Contact
+            Team Chat
           </button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="hero">
+      <section className="hero" ref={heroRef}>
         <div className="hero-inner">
           <div className="hero-content">
             <h1 className="hero-title">
               <span className="title-word title-word-1">CREATING</span>
-              <span className="title-word title-word-2">THE</span>
-              <span className="title-word title-word-3">FUTURE</span>
-              <span className="title-word title-word-4">TODAY</span>
+              <span className="title-word title-word-2">WITH GOD</span>
+              <span className="title-word title-word-3">POWERING PLAY</span>
+              <span className="title-word title-word-4">INSPIRING MINDS</span>
             </h1>
             <p className="hero-subtitle">Innovating Animation, Gaming, and Education</p>
-            <button className="cta-button pulse">Explore Our Services</button>
+            <button 
+              className="cta-button pulse"
+              onClick={() => setActiveSection('projects')}
+            >
+              View Our Projects
+            </button>
           </div>
           <div className="hero-illustration">
             <div className="team-circle">
-              {teamMembers.map((_, i) => (
+              {teamMembers.map((member, i) => (
                 <div
                   key={i}
                   className="team-member-avatar"
                   style={{
                     transform: `rotate(${i * (360 / teamMembers.length)}deg) translate(120px) rotate(-${i * (360 / teamMembers.length)}deg)`,
+                    backgroundImage: `url(${member.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
                   }}
                 ></div>
               ))}
@@ -108,25 +173,162 @@ function App() {
         </div>
       </section>
 
-      {/* Team Values Section */}
-      <section className="values-section">
+      {/* Projects Section */}
+      <section className="projects-section">
         <div className="section-inner">
-          <h2 className="section-title">Our Core Values</h2>
-          <div className="values-grid">
-            <div className="value-card">
-              <div className="value-icon">🎨</div>
-              <h3>Animation Excellence</h3>
-              <p>Crafting captivating stories through cutting-edge animation techniques.</p>
+          <h2 className="section-title">Our Projects</h2>
+          
+          <div className="projects-grid">
+            {projects.map((project) => (
+              <div key={project.id} className="project-card">
+                <div 
+                  className="project-image"
+                  style={{ backgroundImage: `url(${project.image})` }}
+                ></div>
+                <div className="project-details">
+                  <h3>{project.title}</h3>
+                  <p>{project.description}</p>
+                  <div className="project-meta">
+                    <div className="progress-container">
+                      <div 
+                        className="progress-bar" 
+                        style={{ width: `${project.progress}%` }}
+                      ></div>
+                      <span>{project.progress}% Complete</span>
+                    </div>
+                    <div className="deadline">
+                      Deadline: {new Date(project.deadline).toLocaleDateString()}
+                    </div>
+                    <button className="view-button">View Project</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {showProjectForm ? (
+            <div className="project-form">
+              <h3>Add New Project</h3>
+              <div className="form-group">
+                <label>Title</label>
+                <input 
+                  type="text" 
+                  name="title"
+                  value={newProject.title}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Description</label>
+                <textarea 
+                  name="description"
+                  value={newProject.description}
+                  onChange={handleInputChange}
+                ></textarea>
+              </div>
+              <div className="form-group">
+                <label>Image URL</label>
+                <input 
+                  type="text" 
+                  name="image"
+                  value={newProject.image}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Progress (%)</label>
+                <input 
+                  type="number" 
+                  name="progress"
+                  min="0"
+                  max="100"
+                  value={newProject.progress}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Deadline</label>
+                <input 
+                  type="date" 
+                  name="deadline"
+                  value={newProject.deadline}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-actions">
+                <button onClick={handleAddProject}>Add Project</button>
+                <button onClick={() => setShowProjectForm(false)}>Cancel</button>
+              </div>
             </div>
-            <div className="value-card">
-              <div className="value-icon">🎮</div>
-              <h3>Gaming Innovation</h3>
-              <p>Building immersive gaming experiences that push technological boundaries.</p>
+          ) : (
+            <button 
+              className="add-project-button"
+              onClick={() => setShowProjectForm(true)}
+            >
+              + Add New Project
+            </button>
+          )}
+        </div>
+      </section>
+
+      {/* Team Chat Section */}
+      <section className="chat-section">
+        <div className="section-inner">
+          <h2 className="section-title">Team Chat</h2>
+          <div className="chat-container">
+            <div className="chat-members">
+              <h3>Team Members</h3>
+              <ul>
+                {teamMembers.map((member, i) => (
+                  <li key={i}>
+                    <div 
+                      className="member-avatar"
+                      style={{ backgroundImage: `url(${member.image})` }}
+                    ></div>
+                    <span>{member.name}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="value-card">
-              <div className="value-icon">📚</div>
-              <h3>Educational Impact</h3>
-              <p>Empowering learners with transformative educational solutions.</p>
+            <div className="chat-messages">
+              <div className="messages-container">
+                <div className="message received">
+                  <div 
+                    className="message-avatar"
+                    style={{ backgroundImage: `url(${teamMembers[0].image})` }}
+                  ></div>
+                  <div className="message-content">
+                    <div className="message-sender">{teamMembers[0].name}</div>
+                    <div className="message-text">Hey team! How's the animation coming along?</div>
+                    <div className="message-time">10:30 AM</div>
+                  </div>
+                </div>
+                <div className="message sent">
+                  <div className="message-content">
+                    <div className="message-text">Going well! Should have the first draft by EOD.</div>
+                    <div className="message-time">10:32 AM</div>
+                  </div>
+                  <div 
+                    className="message-avatar"
+                    style={{ backgroundImage: `url(${teamMembers[2].image})` }}
+                  ></div>
+                </div>
+                <div className="message received">
+                  <div 
+                    className="message-avatar"
+                    style={{ backgroundImage: `url(${teamMembers[3].image})` }}
+                  ></div>
+                  <div className="message-content">
+                    <div className="message-sender">{teamMembers[3].name}</div>
+                    <div className="message-text">Don't forget we have the client review tomorrow at 2PM</div>
+                    <div className="message-time">10:35 AM</div>
+                  </div>
+                </div>
+              </div>
+              <div className="message-input">
+                <input type="text" placeholder="Type your message..." />
+                <button>Send</button>
+              </div>
             </div>
           </div>
         </div>
@@ -139,7 +341,10 @@ function App() {
           <div className="team-members">
             {teamMembers.map((member, i) => (
               <div key={i} className="team-member-card">
-                <div className="member-avatar"></div>
+                <div 
+                  className="member-avatar"
+                  style={{ backgroundImage: `url(${member.image})` }}
+                ></div>
                 <h3>{member.name}</h3>
                 <p>{member.role}</p>
                 <div className="social-links">
