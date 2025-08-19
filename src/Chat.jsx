@@ -27,7 +27,7 @@ function Chat({ teamMembers }) {
       id: 3,
       sender: teamMembers[3].name,
       senderImage: teamMembers[3].image,
-      text: "Don't forget we have the client review tomorrow at 2PM",
+      text: "We have to pay 40,000 as admission fees.",
       time: "10:35 AM",
       isReceived: true
     }
